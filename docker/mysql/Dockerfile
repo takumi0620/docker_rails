@@ -1,4 +1,5 @@
-FROM mysql:8.0.18
+FROM mysql:5.7.28
+# mysql8系以降で認証方式がcaching_sha2_passwordになっているが、AWSが対応していないためを採用する。
 
 RUN apt-get update && \
     apt-get install -y apt-utils \
