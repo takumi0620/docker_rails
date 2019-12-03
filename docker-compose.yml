@@ -1,6 +1,6 @@
 version: '2'
 services:
-  app:
+  rails-container:
     build:
       context: .
       dockerfile: ./docker/rails/Dockerfile
@@ -12,28 +12,34 @@ services:
       - /var/tmp
       - ./application:/app
     depends_on:
-      - db
+      - mysql-container
     extends:
       file: ./docker/mysql/password.yml
       service: password
-  db:
+  mysql-container:
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
     ports:
       - '3306:3306'
-    volumes:
-      - db_data:/var/lib/mysql
+    volumes_from:
+      - db-container
     extends:
       file: ./docker/mysql/password.yml
       service: password
-  nginx:
+    depends_on:
+      - db-container
+  nginx-container:
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
     ports:
       - '80:80'
     volumes_from:
-      - app
+      - rails-container
+  db-container:
+    image: busybox
+    volumes:
+      - db-volume:/var/lib/mysql/
 volumes:
-  db_data:
+  db-volume:
