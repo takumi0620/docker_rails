@@ -1,11 +1,11 @@
-FROM mysql:5.7.28
-# mysql8系以降で認証方式がcaching_sha2_passwordになっているが、AWSが対応していないためを採用する。
+FROM mysql:8.0.18
 
 RUN apt-get update && \
     apt-get install -y apt-utils \
-                       locales && \
+    locales && \
     rm -rf /var/lib/apt/lists/* && \
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
 ADD ./docker/mysql/charset.cnf /etc/mysql/conf.d/charset.cnf
+ADD ./docker/mysql/my.cnf /etc/mysql/conf.d/my.cnf
