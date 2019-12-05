@@ -1,0 +1,5 @@
+事象
+[docker-compose run rails-container rake db:create]を実行した時に[Could not find nokogiri-1.10.6 in any of the sources]エラーとなる。
+
+解決
+application/Gemfile.lockを削除してもう一度[docker-compose run rails-container rake db:create]を実行する。
